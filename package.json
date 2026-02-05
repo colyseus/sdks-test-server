@@ -13,7 +13,10 @@
     "loadtest": "tsx loadtest/example.ts --room my_room --numClients 2",
     "build": "npm run clean && tsc -p tsconfig.build.json",
     "clean": "rimraf build",
-    "test": "mocha -r tsx test/**.test.ts --exit --timeout 15000"
+    "test": "mocha -r tsx test/**.test.ts --exit --timeout 15000",
+
+    "sdk-codegen-unity": "schema-codegen src/sdks.server.ts --csharp --output ../colyseus-unity-sdk/Assets/RawExample/Schema/",
+    "sdk-codegen-haxe": "schema-codegen src/sdks.server.ts --haxe --output ../colyseus-haxe/example/openfl/Source/"
   },
   "author": "",
   "license": "UNLICENSED",
