@@ -10,6 +10,8 @@ import {
     auth,
 } from "colyseus";
 
+// import { uWebSocketsTransport } from "@colyseus/uwebsockets-transport";
+
 // Import auth config
 import "./config/auth.js";
 
@@ -43,6 +45,8 @@ const server = defineServer({
             return { things: [1, 2, 3, 4, 5, 6] };
         })
     }),
+
+    // transport: new uWebSocketsTransport(),
 
     /**
      * Bind your custom express routes here:
