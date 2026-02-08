@@ -10,6 +10,9 @@ import {
     auth,
 } from "colyseus";
 
+// Import auth config
+import "./config/auth.js";
+
 /**
  * Import your Room files
  */
