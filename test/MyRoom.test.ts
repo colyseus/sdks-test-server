@@ -3,7 +3,7 @@ import { ColyseusTestServer, boot } from "@colyseus/testing";
 
 // import your "app.config.ts" file here.
 import appConfig from "../src/app.config.js";
-import { MyRoomState } from "../src/rooms/schema/MyRoomState.js";
+import { MyRoomState } from "../src/rooms/MyRoom.js";
 
 describe("testing your Colyseus app", () => {
   let colyseus: ColyseusTestServer<typeof appConfig>;
@@ -26,6 +26,9 @@ describe("testing your Colyseus app", () => {
     // wait for state sync
     await room.waitForNextPatch();
 
-    assert.deepStrictEqual({ mySynchronizedProperty: "Hello world" }, client1.state.toJSON());
+    const player = client1.state.players.get(client1.sessionId);
+    assert.ok(player, "joining player must be synchronized to the client");
+    assert.deepStrictEqual(player.items.map((item) => item.name), ["sword"]);
+    assert.strictEqual(client1.state.currentTurn, client1.sessionId);
   });
 });

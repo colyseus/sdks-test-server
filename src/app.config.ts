@@ -38,8 +38,8 @@ const server = defineServer({
     /**
      * Experimental: Define API routes. Built-in integration with the "playground" and SDK.
      *
-     * Usage from SDK:
-     *   client.http.get("/api/hello").then((response) => {})
+     * Endpoints mount at the server root — no "/api" prefix. Usage from SDK:
+     *   client.http.get("/test").then((response) => {})
      *
      */
     routes: createRouter({

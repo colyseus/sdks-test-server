@@ -1,12 +1,12 @@
 import { type Client, generateId, Room } from "@colyseus/core";
 import { MapSchema, Schema, type } from "@colyseus/schema";
 
-class Item extends Schema {
+export class Item extends Schema {
   @type("string") name?: string;
   @type("number") value?: number;
 }
 
-class Player extends Schema {
+export class Player extends Schema {
   @type("number") x: number = 0;
   @type("number") y: number = 0;
   @type("boolean") isBot?: boolean;
@@ -14,7 +14,7 @@ class Player extends Schema {
   @type([Item]) items: Item[] = [];
 }
 
-class MyRoomState extends Schema {
+export class MyRoomState extends Schema {
   @type({ map: Player }) players = new MapSchema<Player>();
   @type(Player) host?: Player;
   @type("string") currentTurn?: string;
