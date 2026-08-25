@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "my-app",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "description": "npm init template for bootstrapping an empty Colyseus project",
   "type": "module",
   "main": "build/index.js",
@@ -14,8 +14,8 @@
     "build": "npm run clean && tsc -p tsconfig.build.json",
     "clean": "rimraf build",
     "test": "mocha -r tsx test/**.test.ts --exit --timeout 15000",
-    "sdk-codegen-unity": "schema-codegen src/sdks.server.ts --csharp --output ../colyseus-unity-sdk/Assets/RawExample/Schema/",
-    "sdk-codegen-haxe": "schema-codegen src/sdks.server.ts --haxe --output ../colyseus-haxe/example/openfl/Source/"
+    "sdk-codegen-unity": "schema-codegen src/rooms/MyRoom.ts --csharp --output ../colyseus-unity-sdk/Assets/RawExample/Schema/",
+    "sdk-codegen-haxe": "schema-codegen src/rooms/MyRoom.ts --haxe --output ../colyseus-haxe/example/openfl/Source/"
   },
   "author": "",
   "license": "UNLICENSED",
@@ -24,9 +24,9 @@
   },
   "homepage": "https://github.com/colyseus/create-colyseus#readme",
   "devDependencies": {
-    "@colyseus/loadtest": "^0.17.7",
-    "@colyseus/sdk": "^0.17.17",
-    "@colyseus/testing": "^0.17.10",
+    "@colyseus/loadtest": "^0.18.1",
+    "@colyseus/sdk": "^0.18.1",
+    "@colyseus/testing": "^0.18.2",
     "@types/express": "^5.0.0",
     "@types/mocha": "^10.0.1",
     "mocha": "^11.7.5",
@@ -35,9 +35,9 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@colyseus/schema": "^4.0.0",
-    "@colyseus/tools": "^0.17.0",
-    "colyseus": "^0.17.6",
+    "@colyseus/schema": "^5.0.11",
+    "@colyseus/tools": "^0.18.2",
+    "colyseus": "^0.18.1",
     "express": "^5.2.1"
   }
 }

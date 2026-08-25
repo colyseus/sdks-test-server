@@ -1,12 +1,12 @@
 import { type Client, generateId, Room } from "@colyseus/core";
 import { MapSchema, Schema, type } from "@colyseus/schema";
 
-class Item extends Schema {
+export class Item extends Schema {
   @type("string") name?: string;
   @type("number") value?: number;
 }
 
-class Player extends Schema {
+export class Player extends Schema {
   @type("number") x: number = 0;
   @type("number") y: number = 0;
   @type("boolean") isBot?: boolean;
@@ -14,7 +14,7 @@ class Player extends Schema {
   @type([Item]) items: Item[] = [];
 }
 
-class MyRoomState extends Schema {
+export class MyRoomState extends Schema {
   @type({ map: Player }) players = new MapSchema<Player>();
   @type(Player) host?: Player;
   @type("string") currentTurn?: string;
@@ -63,6 +63,15 @@ export class MyRoom extends Room {
         this.state.players.delete(bot[0]);
       }
     },
+    reset_items: (client: Client) => {
+      const player = this.state.players.get(client.sessionId);
+      if (!player) return;
+      // Splice all items and push new ones in the same tick
+      // (reproduces the UNO restart scenario: splice+push at overlapping indices)
+      player.items.splice(0, player.items.length);
+      player.items.push(new Item().assign({ name: "reset_a", value: 100 }));
+      player.items.push(new Item().assign({ name: "reset_b", value: 200 }));
+    },
   }
 
   onCreate() {
@@ -73,7 +82,7 @@ export class MyRoom extends Room {
     }, 4000);
   }
 
-  onJoin(client: Client) {
+  onJoin(client: Client, options?: any) {
     const player = new Player();
     player.items.push(new Item().assign({ name: "sword" }));
 
@@ -83,6 +92,9 @@ export class MyRoom extends Room {
     }
 
     this.state.players.set(client.sessionId, player);
+
+    // Echo join options back to the client (for SDK testing)
+    client.send("join_options", options || {});
 
     // advance turn every 2 seconds
     this.clock.setInterval(() => {

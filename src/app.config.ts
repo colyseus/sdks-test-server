@@ -8,6 +8,7 @@ import {
     LobbyRoom,
     QueueRoom,
     auth,
+    matchMaker,
 } from "colyseus";
 
 // import { uWebSocketsTransport } from "@colyseus/uwebsockets-transport";
@@ -26,24 +27,37 @@ const server = defineServer({
      */
     rooms: {
         my_room: defineRoom(MyRoom).enableRealtimeListing(),
+        test_room: defineRoom(MyRoom),
         lobby: defineRoom(LobbyRoom),
         queue: defineRoom(QueueRoom, {
-          matchRoomName: "my_room",
-          maxPlayers: 4
+            matchRoomName: "my_room",
+            maxPlayers: 4
         }),
     },
 
     /**
      * Experimental: Define API routes. Built-in integration with the "playground" and SDK.
-     * 
-     * Usage from SDK: 
-     *   client.http.get("/api/hello").then((response) => {})
-     * 
+     *
+     * Endpoints mount at the server root — no "/api" prefix. Usage from SDK:
+     *   client.http.get("/test").then((response) => {})
+     *
      */
     routes: createRouter({
         test: createEndpoint("/test", { method: "GET" }, async (ctx) => {
             return { things: [1, 2, 3, 4, 5, 6] };
-        })
+        }),
+        test_post: createEndpoint("/test", { method: "POST" }, async (ctx) => {
+            return { method: "POST", body: ctx.body };
+        }),
+        test_put: createEndpoint("/test", { method: "PUT" }, async (ctx) => {
+            return { method: "PUT", body: ctx.body };
+        }),
+        test_delete: createEndpoint("/test", { method: "DELETE" }, async (ctx) => {
+            return { method: "DELETE" };
+        }),
+        test_patch: createEndpoint("/test", { method: "PATCH" }, async (ctx) => {
+            return { method: "PATCH", body: ctx.body };
+        }),
     }),
 
     // transport: new uWebSocketsTransport(),
