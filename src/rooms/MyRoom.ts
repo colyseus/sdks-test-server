@@ -20,6 +20,26 @@ export class MyRoomState extends Schema {
   @type("string") currentTurn?: string;
 }
 
+export interface PointMessage {
+  x: number;
+  y: number;
+}
+
+/**
+ * Typed message payload: one field per array/map spelling `schema-codegen`
+ * turns into a plain collection on the SDKs.
+ */
+export interface CollectionsMessage {
+  tags: string[];
+  values: Array<number>;
+  points: PointMessage[];
+  point: PointMessage;
+  scores: Record<string, number>;
+  flags: { [key: string]: boolean };
+  pointsByName: Map<string, PointMessage>;
+  items: Item[];
+}
+
 /**
  * Room definition
  * ----------------
@@ -71,6 +91,19 @@ export class MyRoom extends Room {
       player.items.splice(0, player.items.length);
       player.items.push(new Item().assign({ name: "reset_a", value: 100 }));
       player.items.push(new Item().assign({ name: "reset_b", value: 200 }));
+    },
+    collections: (client: Client) => {
+      const message: CollectionsMessage = {
+        tags: ["a", "b"],
+        values: [1, 2.5, -3],
+        points: [{ x: 1, y: 2 }, { x: 3.5, y: -4 }],
+        point: { x: 7, y: 8 },
+        scores: { alice: 10, bob: 2.5 },
+        flags: { on: true, off: false },
+        pointsByName: new Map([["p", { x: 5, y: 6 }]]),
+        items: [new Item().assign({ name: "sword", value: 10 })],
+      };
+      client.send("collections", message);
     },
   }
 
